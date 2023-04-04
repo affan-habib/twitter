@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import TwitterSignupScreen from './screens/Signup';
 import TwitterLoginScreen from './screens/Login';
+import HomePage from './screens/HomePage';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,7 @@ export default function App() {
   }, []);
 
   const checkLoginStatus = async () => {
-    const token = await AsyncStorage.getItem('jwt_token');
+    const token = await AsyncStorage.getItem('jwtToken');
     setLoggedIn(token !== null);
   };
 
@@ -23,9 +24,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {loggedIn ? (
-          <Stack.Screen name="Dashboard" component={TwitterSignupScreen} />
+          <Stack.Screen name="dashboard" component={HomePage} />
         ) : (
-          <Stack.Screen name="Login" component={TwitterSignupScreen} />
+          <Stack.Screen name="Login" component={TwitterLoginScreen} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

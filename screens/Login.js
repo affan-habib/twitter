@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  AsyncStorage,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
@@ -31,7 +31,7 @@ const TwitterLoginScreen = ({ navigation }) => {
       );
       console.log(response.data);
       await AsyncStorage.setItem("jwtToken", response.data.token);
-      navigation.navigate("TwitterSignupScreen");
+      navigation.navigate("dashboard");
     } catch (error) {
       console.error(error);
       setErrorMessage("Invalid email or password. Please try again.");
