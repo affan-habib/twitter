@@ -1,33 +1,56 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DATA = [
   {
-    id: '1',
-    username: 'JohnDoe',
-    handle: '@johndoe',
-    tweetText: 'Just had the best pizza in town! 🍕 #yum #pizza #foodie',
-    image: require('../assets/twitter.png'),
+    id: "1",
+    username: "JohnDoe",
+    handle: "@johndoe",
+    tweetText: "Just had the best pizza in town! 🍕 #yum #pizza #foodie",
+    image: require("../assets/twitter.png"),
     likes: 23,
     retweets: 10,
   },
   {
-    id: '2',
-    username: 'JaneDoe',
-    handle: '@janedoe',
-    tweetText: 'Excited to start my new job at Google! 🚀 #newjob #excited',
-    image: require('../assets/twitter.png'),
+    id: "2",
+    username: "JaneDoe",
+    handle: "@janedoe",
+    tweetText: "Excited to start my new job at Google! 🚀 #newjob #excited",
+    image: require("../assets/twitter.png"),
     likes: 32,
     retweets: 15,
   },
 ];
 
-export default function App() {
+export default function HomePage({navigation}) {
   const [tweets, setTweets] = useState(DATA);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const logout = async () => {
+    try {
+      // Remove the jwtToken from AsyncStorage
+      await AsyncStorage.removeItem("jwtToken");
+      // Navigate to the login screen
+      navigation.navigate("TwitterLoginScreen");
+    } catch (e) {
+      console.log("Error logging out:", e);
+    }
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.tweetContainer}>
-      <Image style={styles.tweetImage} source={item.image} />
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Image style={styles.tweetImage} source={item.image} />
+      </TouchableOpacity>
       <View style={styles.tweetContent}>
         <View style={styles.tweetHeader}>
           <Text style={styles.tweetUsername}>{item.username}</Text>
@@ -39,6 +62,16 @@ export default function App() {
           <Text style={styles.tweetStat}>{item.retweets} Retweets</Text>
         </View>
       </View>
+      <Modal visible={modalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <TouchableOpacity onPress={() => setModalVisible(false)}>
+            <Text style={styles.closeButton}>Close</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={logout}>
+            <Text style={styles.logoutButton}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 
@@ -56,13 +89,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 10,
   },
   tweetContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginVertical: 10,
   },
   tweetImage: {
@@ -75,25 +108,39 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tweetHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   tweetUsername: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 5,
   },
   tweetHandle: {
-    color: 'grey',
+    color: "grey",
   },
   tweetText: {
     marginVertical: 5,
   },
   tweetStats: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   tweetStat: {
-    color: 'grey',
+    color: "grey",
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  closeButton: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  logoutButton: {
+    fontSize: 18,
+    color: "red",
+    fontWeight: "bold",
   },
 });

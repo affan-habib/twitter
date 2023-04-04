@@ -24,9 +24,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {loggedIn ? (
-          <Stack.Screen name="dashboard" component={HomePage} />
+          <Stack.Screen name="HomePage" component={HomePage} />
         ) : (
-          <Stack.Screen name="Login" component={TwitterLoginScreen} />
+          <Stack.Screen name="TwitterLoginScreen" component={TwitterLoginScreen} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

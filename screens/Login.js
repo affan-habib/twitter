@@ -31,7 +31,7 @@ const TwitterLoginScreen = ({ navigation }) => {
       );
       console.log(response.data);
       await AsyncStorage.setItem("jwtToken", response.data.token);
-      navigation.navigate("dashboard");
+      navigation.navigate("HomePage");
     } catch (error) {
       console.error(error);
       setErrorMessage("Invalid email or password. Please try again.");
