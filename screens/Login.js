@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-
+import { AuthContext } from "../context/AuthContext";
 const LoginSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
@@ -19,6 +19,7 @@ const LoginSchema = yup.object().shape({
 
 const Login = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
+  const { login } = useContext(AuthContext);
 
   const handleLogin = async (values) => {
     try {
@@ -31,7 +32,7 @@ const Login = ({ navigation }) => {
       );
       console.log(response.data);
       await AsyncStorage.setItem("jwtToken", response.data.token);
-      navigation.navigate("HomePage");
+      // navigation.navigate("Home");
     } catch (error) {
       console.error(error);
       setErrorMessage("Invalid email or password. Please try again.");
