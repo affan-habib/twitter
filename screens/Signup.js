@@ -20,7 +20,7 @@ const SignupSchema = yup.object().shape({
     .required("Password is required"),
 });
 
-const TwitterSignupScreen = () => {
+const Signup = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSignup = async (values) => {
@@ -176,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TwitterSignupScreen;
+export default Signup;

@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
@@ -17,7 +17,7 @@ const LoginSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
-const TwitterLoginScreen = ({ navigation }) => {
+const Login = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async (values) => {
@@ -155,4 +155,4 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
-export default TwitterLoginScreen;
+export default Login;
