@@ -9,8 +9,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UsersList = () => {
+  console.log(AsyncStorage.getItem("jwtToken"))
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);

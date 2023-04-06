@@ -1,98 +1,122 @@
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Tweet from "./Tweet";
 
-const placeholderImage = require("../assets/twitter.png");
+const TwitterHome = () => {
+  const [timeline, setTimeline] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [jwtToken, setJwtToken] = useState("");
 
-function renderItem({ item }) {
-  const { content, user, published } = item;
-  const timestamp = new Date(published).toLocaleString();
-
-  return (
-    <View style={styles.post}>
-      <Image source={placeholderImage} style={styles.avatar} />
-      <View style={styles.postContent}>
-        <Text style={styles.username}>{user.username}</Text>
-        <Text style={styles.postText}>{content}</Text>
-        <Text style={styles.timestamp}>{timestamp}</Text>
-      </View>
-    </View>
-  );
-}
-
-export default function Home() {
-  const token =
-    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwNzYzMTA0fQ.iqG7x_naQZBVPNVijREVetU2ztcPa1hG0MXxB-_Z9WM";
-  const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-
-  useEffect(() => {
-    axios
-      .get("https://missingdata.pythonanywhere.com/timeline", {
-        headers: {
-          "X-Jwt-Token": token,
-        },
-        params: {
-          page,
-        },
-      })
-      .then((response) => {
-        const newData = response.data.timeline;
-        console.log(newData); // Make sure data is correct
-
-        // Update the data and the total count
-        setData((prevData) => [...prevData, ...newData]);
-        setTotalCount(response.data.count);
-      })
-      .catch((error) => {
-        console.log(error); // Handle error
-      });
-  }, [page]);
-
-  const handleEndReached = () => {
-    if (data.length < totalCount) {
-      setPage((prevPage) => prevPage + 1);
+  const getTimeline = async () => {
+    try {
+      const token = await AsyncStorage.getItem("jwtToken");
+      setJwtToken(token);
+      const response = await axios.get(
+        "https://missingdata.pythonanywhere.com/timeline",
+        {
+          headers: { "X-Jwt-Token": token },
+        }
+      );
+      setTimeline(response.data.timeline);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  useEffect(() => {
+    getTimeline();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={require("../assets/twitter.png")}
+          style={styles.placeholderImage}
+        />
+      </View>
+    );
+  }
+
   return (
-    <FlatList
-      data={data}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={renderItem}
-      onEndReached={handleEndReached}
-      onEndReachedThreshold={0.5}
-    />
+    <View style={styles.container}>
+      {timeline.map((tweet) => (
+        <View style={styles.tweetContainer} key={tweet.id}>
+          <Image
+            source={require("../assets/twitter.png")}
+            style={styles.profileImage}
+          />
+          <View style={styles.tweetTextContainer}>
+            <Text style={styles.username}>{tweet.user.username}</Text>
+            <Text style={styles.tweetContent}>{tweet.content}</Text>
+            <Text style={styles.published}>{tweet.published}</Text>
+          </View>
+          <TouchableOpacity style={styles.heartButton}>
+            <MaterialCommunityIcons
+              name="heart-outline"
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
+      ))}
+      <View style={styles.floatingTweetContainer}>
+        <Tweet />
+      </View>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  post: {
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingTop: 20,
+  },
+  placeholderImage: {
+    width: 300,
+    height: 200,
+  },
+  tweetContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 10,
-    marginHorizontal: 20,
   },
-  avatar: {
+  profileImage: {
     width: 50,
     height: 50,
     borderRadius: 25,
     marginRight: 10,
   },
-  postContent: {
+  tweetTextContainer: {
     flex: 1,
-    flexDirection: "column",
+    justifyContent: "center",
   },
   username: {
     fontWeight: "bold",
+    fontSize: 16,
   },
-  postText: {
-    marginTop: 5,
-    marginBottom: 10,
+  tweetContent: {
+    fontSize: 14,
+    marginVertical: 5,
   },
-  timestamp: {
-    color: "gray",
+  published: {
     fontSize: 12,
+    color: "gray",
+  },
+  heartButton: {
+    marginLeft: "auto",
+  },
+  floatingTweetContainer: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
   },
 });
+
+export default TwitterHome;

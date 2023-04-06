@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, TextInput, Keyboard } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 const Tweet = () => {
@@ -14,28 +14,34 @@ const Tweet = () => {
     setShowInput(false);
   };
 
+  const handleOutsidePress = () => {
+    Keyboard.dismiss();
+    setShowInput(false);
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Home</Text>
-      {showInput ? (
-        <View style={styles.tweetInputContainer}>
-          <TextInput
-            style={styles.tweetInput}
-            value={tweetText}
-            onChangeText={setTweetText}
-            placeholder="What's happening?"
-            multiline={true}
-          />
-          <TouchableOpacity style={styles.tweetButton} onPress={handleTweet}>
-            <Text style={styles.tweetButtonText}>Tweet</Text>
+    <TouchableWithoutFeedback onPress={handleOutsidePress}>
+      <View style={styles.container}>
+        {showInput ? (
+          <View style={styles.tweetInputContainer}>
+            <TextInput
+              style={styles.tweetInput}
+              value={tweetText}
+              onChangeText={setTweetText}
+              placeholder="What's happening?"
+              multiline={true}
+            />
+            <TouchableOpacity style={styles.tweetButton} onPress={handleTweet}>
+              <Text style={styles.tweetButtonText}>Tweet</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity style={styles.floatingButton} onPress={() => setShowInput(true)}>
+            <Feather name="edit" size={24} color="white" />
           </TouchableOpacity>
-        </View>
-      ) : (
-        <TouchableOpacity style={styles.floatingButton} onPress={() => setShowInput(true)}>
-          <Feather name="edit" size={24} color="white" />
-        </TouchableOpacity>
-      )}
-    </View>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -64,14 +70,14 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   tweetInputContainer: {
-    position: 'absolute',
     bottom: 16,
     left: 16,
-    right: 16,
+    // right: 16,
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 8,
     elevation: 8,
+    width: 400
   },
   tweetInput: {
     height: 100,
