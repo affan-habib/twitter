@@ -32,7 +32,7 @@ const Login = ({ navigation }) => {
       );
       console.log(response.data);
       await AsyncStorage.setItem("jwtToken", response.data.token);
-      // navigation.navigate("Home");
+      login(response.data.token);
     } catch (error) {
       console.error(error);
       setErrorMessage("Invalid email or password. Please try again.");

@@ -1,50 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Tweet from "./Tweet";
+import fetcher from "../utils/fetcher";
 
-const TwitterHome = () => {
-  const [timeline, setTimeline] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [jwtToken, setJwtToken] = useState("");
-
-  const getTimeline = async () => {
-    try {
-      const token = await AsyncStorage.getItem("jwtToken");
-      setJwtToken(token);
-      const response = await axios.get(
-        "https://missingdata.pythonanywhere.com/timeline",
-        {
-          headers: { "X-Jwt-Token": token },
-        }
-      );
-      setTimeline(response.data.timeline);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getTimeline();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <Image
-          source={require("../assets/twitter.png")}
-          style={styles.placeholderImage}
-        />
-      </View>
-    );
-  }
+const Home = () => {
+  const { responseData, isLoading, error } = fetcher("timeline");
+  
 
   return (
     <View style={styles.container}>
-      {timeline.map((tweet) => (
+      {responseData?.timeline.map((tweet) => (
         <View style={styles.tweetContainer} key={tweet.id}>
           <Image
             source={require("../assets/twitter.png")}
@@ -119,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TwitterHome;
+export default Home;
