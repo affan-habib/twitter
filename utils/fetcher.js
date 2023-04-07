@@ -16,7 +16,7 @@ const fetcher = (endpoint, method = "GET", data = null) => {
         const config = {
           headers: {
             "X-Jwt-Token":
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwODg3NzY1fQ.3-vf1y6n2lBfpjn2ntlPl8ZrWROGMJZyOp-rs6RCpXg",
+              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwODkyNjQ2fQ.w9qljrzs09gXf0rJ6dom9SNAHFiW8A_lEH_NAu7-zVw",
           },
         };
         let response;
