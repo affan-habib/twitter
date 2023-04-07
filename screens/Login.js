@@ -19,7 +19,7 @@ const LoginSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
@@ -112,6 +112,14 @@ const Login = () => {
               </View>
             )}
           </Formik>
+          <TouchableOpacity
+            style={styles.signupButton}
+            onPress={() => navigation.navigate("Signup")}
+          >
+            <Text style={styles.signupButtonText}>
+              Don't have an account? Sign up
+            </Text>
+          </TouchableOpacity>
         </>
       )}
     </View>
