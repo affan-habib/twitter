@@ -4,17 +4,16 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   StyleSheet,
-  ActivityIndicator,
   TextInput,
 } from "react-native";
 import fetcher from "../utils/fetcher";
 import Loader from "../components/Loader";
+import moment from "moment/moment";
 
 const Following = () => {
   const { responseData, isLoading, error } = fetcher(
-    `users?page=${1}&size=${10}`
+    `following?page=${1}&size=${10}`
   );
 
   const [search, setSearch] = useState("");
@@ -25,38 +24,46 @@ const Following = () => {
       <View style={styles.userInfo}>
         <Text style={styles.name}>{item.username}</Text>
         <Text style={styles.email}>{item.email}</Text>
+        <Text style={styles.active}>
+          Active Status : {item.active ? "Active" : "Inactive"}
+        </Text>
+        <Text style={styles.join_date}>
+          Member Since : {moment(item.join_date).format("DD MMM YYYY")}
+        </Text>
       </View>
-      <TouchableOpacity style={styles.followButton}>
-        <Text style={styles.followButtonText}>Follow</Text>
-      </TouchableOpacity>
     </View>
   );
 
-  const filteredUsers = responseData?.users.filter((user) =>
+  const filteredUsers = responseData?.followings?.filter((user) =>
     user.username.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search users"
-          value={search}
-          onChangeText={(text) => setSearch(text)}
-        />
-      </View>
-      {isLoading ? (
-        <Loader />
+    <>
+      {!!responseData?.followings ? (
+        <View style={styles.container}>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search users"
+              value={search}
+              onChangeText={(text) => setSearch(text)}
+            />
+          </View>
+
+          <FlatList
+            data={filteredUsers}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderItem}
+            onEndReachedThreshold={0.5}
+          />
+        </View>
       ) : (
-        <FlatList
-          data={filteredUsers}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-          onEndReachedThreshold={0.5}
-        />
+        <View style={styles.nofollower}>
+          <Text style={styles.nofollowerText}>No Followings found</Text>
+        </View>
       )}
-    </View>
+    </>
   );
 };
 
@@ -104,21 +111,28 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   email: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#666",
   },
-  followButton: {
-    backgroundColor: "#007bff",
-    padding: 5,
-    borderRadius: 5,
-  },
-  followButtonText: {
-    color: "#fff",
+  join_date: {
     fontSize: 14,
-    fontWeight: "bold",
+    color: "#007bff",
+  },
+  active: {
+    fontSize: 14,
+    color: "green",
   },
   loader: {
     marginTop: 50,
+  },
+  nofollower: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 500,
+  },
+  nofollowerText: {
+    fontSize: 16,
   },
 });
 

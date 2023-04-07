@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Following from "./Following";
 import { ScrollView } from "react-native";
-import Followers from "./Follower";
+import Followers from "./Followers";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("followers");

@@ -8,13 +8,16 @@ const fetcher = (endpoint, method = "GET", data = null) => {
   const [responseData, setResponseData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-//   console.log(responseData, isLoading);
+  console.log(responseData, isLoading);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = await AsyncStorage.getItem("jwtToken");
         const config = {
-          headers: { "X-Jwt-Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwODgzNTgyfQ.v9fcf6Go2RyhHO98qZOH1_ASyoOOJuyS47lJsNQBxE8" },
+          headers: {
+            "X-Jwt-Token":
+              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwODg3NzY1fQ.3-vf1y6n2lBfpjn2ntlPl8ZrWROGMJZyOp-rs6RCpXg",
+          },
         };
         let response;
         if (method === "GET") {

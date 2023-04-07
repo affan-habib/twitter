@@ -9,7 +9,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      {responseData?.timeline.map((tweet) => (
+      {responseData?.timeline?.map((tweet) => (
         <View style={styles.tweetContainer} key={tweet.id}>
           <Image
             source={require("../assets/twitter.png")}
