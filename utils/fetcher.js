@@ -14,7 +14,7 @@ const fetcher = (endpoint, method = "GET", data = null) => {
       try {
         const token = await AsyncStorage.getItem("jwtToken");
         const config = {
-          headers: { "X-Jwt-Token": token },
+          headers: { "X-Jwt-Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwODgzNTgyfQ.v9fcf6Go2RyhHO98qZOH1_ASyoOOJuyS47lJsNQBxE8" },
         };
         let response;
         if (method === "GET") {

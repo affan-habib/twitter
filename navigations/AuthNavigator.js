@@ -6,6 +6,7 @@ import { Feather } from "@expo/vector-icons";
 import Home from "../screens/Home";
 import UsersList from "../screens/Users";
 import Login from "../screens/Login";
+import Profile from "../screens/Profile";
 
 function MyTabBar({ state, descriptors, navigation }) {
   return (
@@ -53,8 +54,8 @@ function MyTabBar({ state, descriptors, navigation }) {
           iconName = "search";
         } else if (route.name === "Notifications") {
           iconName = "bell";
-        } else if (route.name === "Messages") {
-          iconName = "mail";
+        } else if (route.name === "Profile") {
+          iconName = "user";
         }
 
         return (
@@ -93,7 +94,7 @@ export default function AuthNavigator() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Search" component={UsersList} />
       <Tab.Screen name="Notifications" component={UsersList} />
-      <Tab.Screen name="Messages" component={UsersList} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 }
