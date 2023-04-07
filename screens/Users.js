@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   View,
@@ -7,43 +7,23 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  TextInput,
 } from "react-native";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import fetcher from "../utils/fetcher";
+import Loader from "../components/Loader";
 
-const UsersList = () => {
-  console.log(AsyncStorage.getItem("jwtToken"))
-  const [users, setUsers] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+const Users = () => {
+  const { responseData, isLoading, error } = fetcher(
+    `users?page=${1}&size=${10}`
+  );
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get(
-        `https://reqres.in/api/users?page=${page}`
-      );
-      setUsers((prevUsers) => [...prevUsers, ...response.data.data]);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, [page]);
-
-  const handleLoadMore = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+  const [search, setSearch] = useState("");
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
-      <Image style={styles.avatar} source={{ uri: item.avatar }} />
+      <Image style={styles.avatar} source={require("../assets/twitter.png")} />
       <View style={styles.userInfo}>
-        <Text style={styles.name}>
-          {item.first_name} {item.last_name}
-        </Text>
+        <Text style={styles.name}>{item.username}</Text>
         <Text style={styles.email}>{item.email}</Text>
       </View>
       <TouchableOpacity style={styles.followButton}>
@@ -52,16 +32,27 @@ const UsersList = () => {
     </View>
   );
 
+  const filteredUsers = responseData?.users.filter((user) =>
+    user.username.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator style={styles.loader} />
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search users"
+          value={search}
+          onChangeText={(text) => setSearch(text)}
+        />
+      </View>
+      {isLoading ? (
+        <Loader />
       ) : (
         <FlatList
-          data={users}
+          data={filteredUsers}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
-          onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
         />
       )}
@@ -74,6 +65,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 10,
+  },
+  searchContainer: {
+    backgroundColor: "#f7f7f7",
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 10,
+  },
+  searchInput: {
+    fontSize: 16,
   },
   card: {
     flexDirection: "row",
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UsersList;
+export default Users;

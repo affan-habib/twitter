@@ -8,7 +8,7 @@ const fetcher = (endpoint, method = "GET", data = null) => {
   const [responseData, setResponseData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log(responseData, isLoading);
+//   console.log(responseData, isLoading);
   useEffect(() => {
     const fetchData = async () => {
       try {

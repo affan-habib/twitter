@@ -12,17 +12,21 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import Loader from "../components/Loader";
+
 const LoginSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
 });
 
-const Login = ({ navigation }) => {
+const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
 
   const handleLogin = async (values) => {
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://missingdata.pythonanywhere.com/login",
         {
@@ -31,73 +35,85 @@ const Login = ({ navigation }) => {
         }
       );
       console.log(response.data);
-      await AsyncStorage.setItem("jwtToken", response.data.token);
       login(response.data.token);
     } catch (error) {
       console.error(error);
       setErrorMessage("Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={require("../assets/twitter.png")} />
-      <Text style={styles.title}>Log in to your account</Text>
-      {errorMessage !== "" && <Text style={styles.error}>{errorMessage}</Text>}
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => handleLogin(values)}
-        validationSchema={LoginSchema}
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-        }) => (
-          <View style={styles.form}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={[
-                  styles.input,
-                  touched.email && errors.email ? styles.inputError : null,
-                ]}
-                placeholder="Email or username"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-                keyboardType="email-address"
-              />
-              {touched.email && errors.email ? (
-                <Text style={styles.errorText}>{errors.email}</Text>
-              ) : null}
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={[
-                  styles.input,
-                  touched.password && errors.password
-                    ? styles.inputError
-                    : null,
-                ]}
-                placeholder="Password"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-                secureTextEntry
-              />
-              {touched.password && errors.password ? (
-                <Text style={styles.errorText}>{errors.password}</Text>
-              ) : null}
-            </View>
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Log in</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <Image
+            style={styles.logo}
+            source={require("../assets/twitter.png")}
+          />
+          <Text style={styles.title}>Log in to your account</Text>
+          {errorMessage !== "" && (
+            <Text style={styles.error}>{errorMessage}</Text>
+          )}
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            onSubmit={(values) => handleLogin(values)}
+            validationSchema={LoginSchema}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
+              <View style={styles.form}>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.email && errors.email ? styles.inputError : null,
+                    ]}
+                    placeholder="Email or username"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    keyboardType="email-address"
+                  />
+                  {touched.email && errors.email ? (
+                    <Text style={styles.errorText}>{errors.email}</Text>
+                  ) : null}
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.password && errors.password
+                        ? styles.inputError
+                        : null,
+                    ]}
+                    placeholder="Password"
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    secureTextEntry
+                  />
+                  {touched.password && errors.password ? (
+                    <Text style={styles.errorText}>{errors.password}</Text>
+                  ) : null}
+                </View>
+                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                  <Text style={styles.buttonText}>Log in</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </Formik>
+        </>
+      )}
     </View>
   );
 };

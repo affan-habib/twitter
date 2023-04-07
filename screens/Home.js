@@ -6,7 +6,6 @@ import fetcher from "../utils/fetcher";
 
 const Home = () => {
   const { responseData, isLoading, error } = fetcher("timeline");
-  
 
   return (
     <View style={styles.container}>
@@ -82,6 +81,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+
   },
 });
 
