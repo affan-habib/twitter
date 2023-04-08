@@ -5,7 +5,7 @@ import { ScrollView } from "react-native";
 import Followers from "./Followers";
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState("followers");
+  const [activeTab, setActiveTab] = useState("following");
 
   const handleTabPress = (tab) => {
     setActiveTab(tab);
@@ -14,22 +14,6 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <TouchableOpacity
-          style={[
-            styles.tabButton,
-            activeTab === "followers" && styles.activeTabButton,
-          ]}
-          onPress={() => handleTabPress("followers")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "followers" && styles.activeTabText,
-            ]}
-          >
-            Followers
-          </Text>
-        </TouchableOpacity>
         <TouchableOpacity
           style={[
             styles.tabButton,
@@ -46,16 +30,32 @@ const Profile = () => {
             Following
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.tabButton,
+            activeTab === "followers" && styles.activeTabButton,
+          ]}
+          onPress={() => handleTabPress("followers")}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === "followers" && styles.activeTabText,
+            ]}
+          >
+            Followers
+          </Text>
+        </TouchableOpacity>
       </View>
       {activeTab === "followers" && (
-        <ScrollView style={styles.tabContent}>
+        <View style={{ flex: 1 }}>
           <Followers />
-        </ScrollView>
+        </View>
       )}
       {activeTab === "following" && (
-        <ScrollView style={styles.tabContent}>
+        <View style={{ flex: 1 }}>
           <Following />
-        </ScrollView>
+        </View>
       )}
     </View>
   );
@@ -64,9 +64,6 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    padding: 20,
   },
   topBar: {
     flexDirection: "row",
