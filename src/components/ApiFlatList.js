@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, View, Text, StyleSheet, Image } from "react-native";
+import { FlatList, View, Text, Image } from "react-native";
 import axios from "axios";
 import Loader from "./Loader";
 import ReactOnPost from "./ReactOnPost";
 import FollowUser from "./FollowUser";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from "moment";
+import globalStyles from "../styles/globalStyles";
 
 const PAGE_SIZE = 10;
 
-const ApiFlatList = ({ endpoint, dataKey, renderKeys, additionalStyles }) => {
+const ApiFlatList = ({
+  endpoint,
+  dataKey,
+  renderKeys,
+  additionalStyles = {},
+}) => {
+  const styles = { ...globalStyles, ...additionalStyles };
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,12 +25,12 @@ const ApiFlatList = ({ endpoint, dataKey, renderKeys, additionalStyles }) => {
 
   const fetchData = async () => {
     try {
+      const token = await AsyncStorage.getItem("token");
       const response = await axios.get(
         `https://missingdata.pythonanywhere.com/${endpoint}?page=${page}&size=${PAGE_SIZE}`,
         {
           headers: {
-            "X-Jwt-Token":
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwOTQ2MTc3fQ.w7S79nLWgPmpZEfDA9h4MHCMJ3FtcnMTJ_HX3ipCFY8",
+            "X-Jwt-Token": token,
           },
         }
       );
@@ -50,16 +59,28 @@ const ApiFlatList = ({ endpoint, dataKey, renderKeys, additionalStyles }) => {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
+    <View style={styles.container}>
       <Image source={require("../assets/twitter.png")} style={styles.avatar} />
-      {renderKeys.map((key) => {
-        // Access nested object using dot notation
-        const value = key.includes(".")
-          ? item[key.split(".")[0]][key.split(".")[1]]
-          : item[key];
+      <View style={styles.card}>
+        {renderKeys.map((key) => {
+          // Access nested object using dot notation
+          let value = key.includes(".")
+            ? item[key.split(".")[0]][key.split(".")[1]]
+            : item[key];
 
-        return <Text key={key}>{value}</Text>;
-      })}
+          // Format join_date key
+          if (key === "join_date") {
+            const formattedValue = moment(value).format("DD MMM YY");
+            value = formattedValue;
+          }
+
+          return (
+            <Text style={styles[key]} key={key}>
+              {value}
+            </Text>
+          );
+        })}
+      </View>
       {endpoint === "timeline" && <ReactOnPost />}
       {endpoint === "users" && <FollowUser id={item.id} />}
     </View>
@@ -92,35 +113,5 @@ const ApiFlatList = ({ endpoint, dataKey, renderKeys, additionalStyles }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F8F8F8",
-    padding: 16,
-  },
-  card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 6,
-    elevation: 1,
-    marginBottom: 16,
-    padding: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-  },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
-});
 
 export default ApiFlatList;

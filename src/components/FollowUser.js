@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#007bff",
     padding: 5,
     borderRadius: 5,
+    marginLeft: 10,
   },
   followButtonText: {
     color: "#fff",

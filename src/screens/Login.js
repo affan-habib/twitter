@@ -59,7 +59,7 @@ const Login = ({ navigation }) => {
             <Text style={styles.error}>{errorMessage}</Text>
           )}
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ email: "affan.eatl@gmail.com", password: "12345678" }}
             onSubmit={(values) => handleLogin(values)}
             validationSchema={LoginSchema}
           >

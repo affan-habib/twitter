@@ -10,7 +10,7 @@ const ReactOnPost = ({ id }) => {
         name="heart-o"
         size={24}
         color="black"
-        style={[{ color: clicked ? "red" : "gray" }]}
+        style={[{ color: clicked ? "red" : "gray", marginLeft : 10 }]}
       />
     </TouchableOpacity>
   );

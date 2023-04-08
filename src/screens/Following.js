@@ -8,7 +8,7 @@ const Home = () => {
       <ApiFlatList
         endpoint="following"
         dataKey="followings"
-        renderKeys={["id", "username", "join_date"]}
+        renderKeys={["username", "join_date"]}
       />
     </View>
   );
