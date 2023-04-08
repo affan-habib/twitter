@@ -7,6 +7,7 @@ import Home from "../screens/Home";
 import UsersList from "../screens/Users";
 import Login from "../screens/Login";
 import Profile from "../screens/Profile";
+import MyTweets from "../screens/MyTweets";
 
 function MyTabBar({ state, descriptors, navigation }) {
   return (
@@ -52,8 +53,8 @@ function MyTabBar({ state, descriptors, navigation }) {
           iconName = "home";
         } else if (route.name === "Search") {
           iconName = "search";
-        } else if (route.name === "Notifications") {
-          iconName = "bell";
+        } else if (route.name === "My Tweets") {
+          iconName = "search";
         } else if (route.name === "Profile") {
           iconName = "user";
         }
@@ -93,7 +94,7 @@ export default function AuthNavigator() {
     <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Search" component={UsersList} />
-      <Tab.Screen name="Notifications" component={UsersList} />
+      <Tab.Screen name="My Tweets" component={MyTweets} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

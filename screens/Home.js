@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import ApiFlatList from "../components/ApiFlatList";
+import Tweet from "./Tweet";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
         dataKey="timeline"
         renderKeys={["user.username", "content"]}
       />
+      <Tweet />
     </View>
   );
 };
