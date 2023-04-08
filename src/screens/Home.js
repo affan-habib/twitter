@@ -9,7 +9,7 @@ const Home = () => {
       <ApiFlatList
         endpoint="timeline"
         dataKey="timeline"
-        renderKeys={["user.username", "content"]}
+        renderKeys={["user.username", "content", "posted"]}
         additionalStyles={additionalStyles}
       />
       {/* <Tweet /> */}
@@ -18,7 +18,11 @@ const Home = () => {
 };
 const additionalStyles = StyleSheet.create({
   content: {
-    fontSize: 13,
+    fontSize: 14,
+  },
+  posted: {
+    fontSize: 12,
+    color: "green"
   },
 });
 

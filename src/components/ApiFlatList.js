@@ -7,7 +7,6 @@ import FollowUser from "./FollowUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import globalStyles from "../styles/globalStyles";
-import SearchUser from "./SearchUser";
 
 const PAGE_SIZE = 10;
 
@@ -36,7 +35,7 @@ const ApiFlatList = ({
         }
       );
       const responseData = response.data[dataKey];
-      console.log(responseData);
+      // console.log(responseData);
       setIsLoading(false);
       if (responseData.length === 0) {
         setIsLastPage(true);
@@ -72,9 +71,12 @@ const ApiFlatList = ({
           // Format join_date key
           if (key === "join_date") {
             const formattedValue = moment(value).format("DD MMM YY");
-            value = formattedValue;
+            value = `Member since ${formattedValue}`;
           }
-
+          if (key === "posted") {
+            const formattedValue = moment(value).format("DD MMM YY");
+            value = `Updated at ${formattedValue}`;
+          }
           return (
             <Text
               style={key === "user.username" ? styles.username : styles[key]}

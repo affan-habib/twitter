@@ -10,14 +10,16 @@ const Home = () => {
   return (
     <View style={{ flex: 1 }}>
       <SearchUser search={search} setSearch={setSearch} />
-      {search.trim() == "" && (
-        <MemoizedApiFlatList
-          endpoint="users"
-          dataKey="users"
-          renderKeys={["username", "email", "join_date"]}
-          additionalStyles={additionalStyles}
-        />
-      )}
+      <View style={{ flex: 1 }}>
+        {search.trim() == "" && (
+          <MemoizedApiFlatList
+            endpoint="users"
+            dataKey="users"
+            renderKeys={["username", "email", "join_date"]}
+            additionalStyles={additionalStyles}
+          />
+        )}
+      </View>
     </View>
   );
 };
