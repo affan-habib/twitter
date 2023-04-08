@@ -75,7 +75,10 @@ const ApiFlatList = ({
           }
 
           return (
-            <Text style={styles[key]} key={key}>
+            <Text
+              style={key === "user.username" ? styles.username : styles[key]}
+              key={key}
+            >
               {value}
             </Text>
           );
@@ -101,7 +104,7 @@ const ApiFlatList = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}

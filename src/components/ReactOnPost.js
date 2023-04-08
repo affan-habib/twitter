@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 
 const ReactOnPost = ({ id }) => {
-  const [clicked, setClicked] = useState(true);
+  const [clicked, setClicked] = useState(false);
   return (
     <TouchableOpacity onPress={() => setClicked(!clicked)}>
       <FontAwesome
-        name="heart-o"
+        name={clicked ? "heart" : "heart-o"}
         size={24}
-        color="black"
-        style={[{ color: clicked ? "red" : "gray", marginLeft : 10 }]}
+        color={clicked ? "#007bff" : "gray"}
+        style={{ marginLeft: 10 }}
       />
     </TouchableOpacity>
   );

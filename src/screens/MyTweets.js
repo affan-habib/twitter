@@ -8,7 +8,7 @@ const MyTweets = () => {
       <ApiFlatList
         endpoint="/my-tweets"
         dataKey="my_tweets"
-        renderKeys={["user.username", "content"]}
+        renderKeys={["user.username", "content", "published"]}
       />
     </View>
   );
