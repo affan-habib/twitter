@@ -7,6 +7,7 @@ import FollowUser from "./FollowUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import globalStyles from "../styles/globalStyles";
+import SearchUser from "./SearchUser";
 
 const PAGE_SIZE = 10;
 
