@@ -3,17 +3,17 @@ import { View } from "react-native";
 import ApiFlatList from "../components/ApiFlatList";
 import Tweet from "./Tweet";
 
-const MyTweets = () => {
+const Home = () => {
   return (
     <View style={{ flex: 1 }}>
       <ApiFlatList
-        endpoint="/my-tweets"
-        dataKey="my_tweets"
+        endpoint="timeline"
+        dataKey="timeline"
         renderKeys={["user.username", "content"]}
       />
-      <Tweet />
+      {/* <Tweet /> */}
     </View>
   );
 };
 
-export default MyTweets;
+export default Home;

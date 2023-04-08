@@ -21,7 +21,7 @@ const ApiFlatList = ({ endpoint, dataKey, renderKeys, additionalStyles }) => {
         {
           headers: {
             "X-Jwt-Token":
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwOTQyNDcyfQ.Qe51X7WmWP3jo_RY1x8fNM2kUoBaFSd-yhfcIw5c0p8",
+              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwOTQ2MTc3fQ.w7S79nLWgPmpZEfDA9h4MHCMJ3FtcnMTJ_HX3ipCFY8",
           },
         }
       );

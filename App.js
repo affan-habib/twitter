@@ -1,6 +1,6 @@
 import React from "react";
-import AuthProvider from "./context/AuthContext";
-import GuestStackNavigator from "./navigations/GuestNavigator";
+import AuthProvider from "./src/context/AuthContext";
+import GuestStackNavigator from "./src/navigations/GuestNavigator";
 
 const App = () => {
   return (
