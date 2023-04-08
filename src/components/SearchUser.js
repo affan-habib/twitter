@@ -49,6 +49,9 @@ const SearchUser = ({ token, search, setSearch }) => {
       const id = setTimeout(() => searchUsers(), delay);
       setTimerId(id);
     }
+    if (search.length === 0) {
+      setUsers([]);
+    }
     return () => clearTimeout(timerId);
   }, [search]);
 
