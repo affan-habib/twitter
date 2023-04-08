@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, View, Text, StyleSheet } from "react-native";
+import { FlatList, View, Text, StyleSheet, Image } from "react-native";
 import axios from "axios";
 import Loader from "./Loader";
+import ReactOnPost from "./ReactOnPost";
+import FollowUser from "./FollowUser";
 
 const PAGE_SIZE = 10;
 
@@ -19,7 +21,7 @@ const ApiFlatList = ({ endpoint, dataKey, renderKeys, additionalStyles }) => {
         {
           headers: {
             "X-Jwt-Token":
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwODk5MDkyfQ.jGgwpzRe7kcMsOFsvANW_DM1a5FCqIcRTAcCktjRxcc",
+              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwOTQyNDcyfQ.Qe51X7WmWP3jo_RY1x8fNM2kUoBaFSd-yhfcIw5c0p8",
           },
         }
       );
@@ -49,6 +51,7 @@ const ApiFlatList = ({ endpoint, dataKey, renderKeys, additionalStyles }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
+      <Image source={require("../assets/twitter.png")} style={styles.avatar} />
       {renderKeys.map((key) => {
         // Access nested object using dot notation
         const value = key.includes(".")
@@ -57,6 +60,8 @@ const ApiFlatList = ({ endpoint, dataKey, renderKeys, additionalStyles }) => {
 
         return <Text key={key}>{value}</Text>;
       })}
+      {endpoint === "timeline" && <ReactOnPost />}
+      {endpoint === "users" && <FollowUser id={item.id} />}
     </View>
   );
 
@@ -109,6 +114,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
   },
 });
 

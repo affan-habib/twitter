@@ -8,7 +8,7 @@ const Home = () => {
       <ApiFlatList
         endpoint="timeline"
         dataKey="timeline"
-        renderKeys={["id", "content", "user.username"]}
+        renderKeys={["user.username", "content"]}
       />
     </View>
   );
