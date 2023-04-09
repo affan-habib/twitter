@@ -1,18 +1,11 @@
 import React, { useContext, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
+import authStyles from "../styles/authStyles";
 
 const LoginSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -20,6 +13,7 @@ const LoginSchema = yup.object().shape({
 });
 
 const Login = ({ navigation }) => {
+  const styles = authStyles;
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
@@ -59,7 +53,10 @@ const Login = ({ navigation }) => {
             <Text style={styles.error}>{errorMessage}</Text>
           )}
           <Formik
-            initialValues={{ email: "affan.eatl@gmail.com", password: "12345678" }}
+            initialValues={{
+              email: "affan.eatl@gmail.com",
+              password: "12345678",
+            }}
             onSubmit={(values) => handleLogin(values)}
             validationSchema={LoginSchema}
           >
@@ -126,58 +123,4 @@ const Login = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  form: {
-    width: "100%",
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    fontSize: 16,
-  },
-  inputError: {
-    borderColor: "red",
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-  },
-  button: {
-    backgroundColor: "#1DA1F2",
-    paddingVertical: 15,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  error: {
-    color: "red",
-    marginBottom: 20,
-  },
-});
 export default Login;

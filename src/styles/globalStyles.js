@@ -38,6 +38,17 @@ const globalStyles = StyleSheet.create({
     borderRadius: 25,
     marginRight: 10,
   },
+  dataLength: {
+    fontSize: 14,
+    color: "white",
+    textAlign: "center",
+    backgroundColor: "gray",
+  },
+  noData: {
+    padding: 20,
+    color: "red",
+    textAlign: "center",
+  },
 });
 
 export default globalStyles;

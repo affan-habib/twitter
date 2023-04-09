@@ -12,7 +12,7 @@ const Home = () => {
         renderKeys={["user.username", "content", "posted"]}
         additionalStyles={additionalStyles}
       />
-      {/* <Tweet /> */}
+      <Tweet />
     </View>
   );
 };
@@ -22,7 +22,7 @@ const additionalStyles = StyleSheet.create({
   },
   posted: {
     fontSize: 12,
-    color: "green"
+    color: "green",
   },
 });
 

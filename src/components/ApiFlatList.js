@@ -108,6 +108,12 @@ const ApiFlatList = ({
 
   return (
     <View>
+      {!!data.length && !isLoading && (
+        <Text style={styles.dataLength}>{data.length} Results found</Text>
+      )}
+      {data.length === 0 && !isLoading && (
+        <Text style={styles.noData}>No Results found</Text>
+      )}
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
