@@ -2,125 +2,124 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  StyleSheet,
+  Modal,
   TextInput,
-  Keyboard,
+  TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Tweet = () => {
-  const [tweetText, setTweetText] = useState("");
-  const [showInput, setShowInput] = useState(false);
+  const [tweet, setTweet] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleTweet = async () => {
+  const handlePost = async () => {
     try {
+      const token = await AsyncStorage.getItem("token");
       const response = await axios.post(
         `https://missingdata.pythonanywhere.com/tweet`,
-        { content: tweetText },
+        { content: tweet },
         {
           headers: {
-            "X-Jwt-Token":
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEzIiwiZXhwIjoxNjgwOTQyNDcyfQ.Qe51X7WmWP3jo_RY1x8fNM2kUoBaFSd-yhfcIw5c0p8",
+            "X-Jwt-Token": token,
           },
         }
       );
-      setTweetText("");
-      setShowInput(false);
+      setTweet("");
+      setModalVisible(false);
       console.log(response.data);
     } catch (err) {
       console.log(err);
     }
-    console.log("Tweet posted:", tweetText);
-    // // Clear the tweet input and hide it
   };
-
-  const handleOutsidePress = () => {
-    Keyboard.dismiss();
-    setShowInput(false);
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={handleOutsidePress}>
-      <View style={styles.container}>
-        {showInput ? (
-          <View style={styles.tweetInputContainer}>
-            <TextInput
-              style={styles.tweetInput}
-              value={tweetText}
-              onChangeText={setTweetText}
-              placeholder="What's happening?"
-              multiline={true}
-            />
-            <TouchableOpacity style={styles.tweetButton} onPress={handleTweet}>
-              <Text style={styles.tweetButtonText}>Tweet</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setModalVisible(true)}
+      >
+        <Feather name="edit-2" size={24} color="#fff" />
+      </TouchableOpacity>
+
+      <Modal visible={modalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
           <TouchableOpacity
-            style={styles.floatingButton}
-            onPress={() => setShowInput(true)}
+            style={styles.closeButton}
+            onPress={() => setModalVisible(false)}
           >
-            <Feather name="edit" size={24} color="white" />
+            <Feather name="x" size={24} color="#333" />
           </TouchableOpacity>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+
+          <Text style={styles.title}>Post a Tweet</Text>
+
+          <TextInput
+            style={styles.input}
+            value={tweet}
+            onChangeText={setTweet}
+            maxLength={160}
+            placeholder="What's happening?"
+            multiline={true}
+          />
+
+          <TouchableOpacity style={styles.postButton} onPress={handlePost}>
+            <Text style={styles.buttonText}>Post</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#f5f8fa",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  floatingButton: {
     position: "absolute",
-    bottom: 16,
-    right: 16,
-    backgroundColor: "#1da1f2",
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 8,
+    bottom: 20,
+    right: 20,
+    paddingTop: 100
   },
-  tweetInputContainer: {
-    bottom: 16,
-    left: 16,
-    // right: 16,
+  button: {
+    backgroundColor: "#1da1f2",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    flex: 1,
+    padding: 20,
+    marginTop: 20,
     backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 8,
-    elevation: 8,
-    width: 400,
   },
-  tweetInput: {
-    height: 100,
-    textAlignVertical: "top",
-    marginBottom: 8,
+  closeButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+
   },
-  tweetButton: {
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  input: {
+    height: 80,
+    padding: 20,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  postButton: {
     backgroundColor: "#1da1f2",
-    borderRadius: 24,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 10,
+    borderRadius: 5,
   },
-  tweetButtonText: {
+  buttonText: {
     color: "#fff",
-    fontSize: 16,
+    textAlign: "center",
     fontWeight: "bold",
   },
 });
