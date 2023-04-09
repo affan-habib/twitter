@@ -55,7 +55,9 @@ const authStyles = StyleSheet.create({
   },
   signupButtonText: {
     marginTop: 10,
-    color: "green",
+  },
+  signupButton: {
+    color: "#1DA1F2",
   },
 });
 export default authStyles;

@@ -60,13 +60,10 @@ const ApiFlatList = ({
   };
 
   const renderItem = ({ item }) => (
-    <FadeIn>
-      <View style={styles.container}>
-        <Image
-          source={require("../assets/twitter.png")}
-          style={styles.avatar}
-        />
-        <View style={styles.card}>
+    <View style={styles.container}>
+      <Image source={require("../assets/twitter.png")} style={styles.avatar} />
+      <View style={styles.card}>
+        <FadeIn>
           {renderKeys.map((key) => {
             // Access nested object using dot notation
             let value = key.includes(".")
@@ -78,8 +75,8 @@ const ApiFlatList = ({
               const formattedValue = moment(value).format("DD MMM YY");
               value = `Member since ${formattedValue}`;
             }
-            if (key === "posted") {
-              const formattedValue = moment(value).format("DD MMM YY");
+            if (key === "posted" || key === "published") {
+              const formattedValue = moment(value).format("DD MMM YY hh:mma");
               value = `Updated at ${formattedValue}`;
             }
             return (
@@ -91,11 +88,11 @@ const ApiFlatList = ({
               </Text>
             );
           })}
-        </View>
-        {endpoint === "timeline" && <ReactOnPost />}
-        {endpoint === "users" && <FollowUser id={item.id} />}
+        </FadeIn>
       </View>
-    </FadeIn>
+      {endpoint === "timeline" && <ReactOnPost />}
+      {endpoint === "users" && <FollowUser id={item.id} />}
+    </View>
   );
 
   const renderFooter = () => {

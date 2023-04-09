@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
@@ -31,6 +32,7 @@ const Tweet = () => {
       setTweet("");
       setModalVisible(false);
       console.log(response.data);
+      Alert.alert("Tweet posted successfully");
     } catch (err) {
       console.log(err);
     }
@@ -53,7 +55,7 @@ const Tweet = () => {
               style={styles.closeButton}
               onPress={() => setModalVisible(false)}
             >
-             <AntDesign name="closecircle" size={24} color="red" />
+              <AntDesign name="closecircle" size={24} color="red" />
             </TouchableOpacity>
           </View>
 
@@ -96,7 +98,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   header: {
-
     flexDirection: "row",
     justifyContent: "space-between",
   },

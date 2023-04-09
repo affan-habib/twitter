@@ -109,12 +109,10 @@ const Login = ({ navigation }) => {
               </View>
             )}
           </Formik>
-          <TouchableOpacity
-            style={styles.signupButton}
-            onPress={() => navigation.navigate("Signup")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
             <Text style={styles.signupButtonText}>
-              Don't have an account? Sign up
+              Don't have an account?{" "}
+              <Text style={styles.signupButton}>Sign up</Text>
             </Text>
           </TouchableOpacity>
         </>
