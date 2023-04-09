@@ -1,101 +1,99 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Feather } from "@expo/vector-icons";
+import { AntDesign } from "expo-vector-icons";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import Home from "../screens/Home";
 import UsersList from "../screens/Users";
-import Login from "../screens/Login";
 import Profile from "../screens/Profile";
 import MyTweets from "../screens/MyTweets";
-
-function MyTabBar({ state, descriptors, navigation }) {
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        borderTopWidth: 1,
-        borderTopColor: "#ccc",
-      }}
-    >
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
-
-        const isFocused = state.index === index;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: "tabLongPress",
-            target: route.key,
-          });
-        };
-
-        let iconName;
-
-        if (route.name === "Home") {
-          iconName = "home";
-        } else if (route.name === "Search") {
-          iconName = "search";
-        } else if (route.name === "My Tweets") {
-          iconName = "search";
-        } else if (route.name === "Profile") {
-          iconName = "user";
-        }
-
-        return (
-          <TouchableOpacity
-            key={route.key}
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={{ flex: 1, alignItems: "center", paddingVertical: 12 }}
-          >
-            <Feather
-              name={iconName}
-              size={24}
-              color={isFocused ? "#1DA1F2" : "#AAB8C2"}
-            />
-            <Text
-              style={{ color: isFocused ? "#1DA1F2" : "#AAB8C2", marginTop: 8 }}
-            >
-              {label}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-}
+import { AuthContext } from "../context/AuthContext";
+// import CustomHeader from "../components/CustomHeader";
 
 const Tab = createBottomTabNavigator();
 
 export default function AuthNavigator() {
+  const { logout } = useContext(AuthContext);
   return (
-    <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Search" component={UsersList} />
-      <Tab.Screen name="My Tweets" component={MyTweets} />
-      <Tab.Screen name="Profile" component={Profile} />
+    <Tab.Navigator
+      tabBarOptions={{
+        showLabel: false,
+        activeTintColor: "#1DA1F2",
+        inactiveTintColor: "#AAB8C2",
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="home" size={24} color={color} />
+          ),
+          headerTitle: "Home",
+          headerStyle: styles.header,
+          headerRight: () => (
+            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+              <AntDesign name="logout" size={24} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Explore"
+        component={UsersList}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="search1" size={24} color={color} />
+          ),
+          headerTitle: "Explore",
+          headerStyle: styles.header,
+          headerRight: () => (
+            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+              <AntDesign name="logout" size={24} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="My Tweets"
+        component={MyTweets}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="retweet" size={24} color={color} />
+          ),
+          headerTitle: "My Tweets",
+          headerStyle: styles.header,
+          headerRight: () => (
+            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+              <AntDesign name="logout" size={24} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="user" size={24} color={color} />
+          ),
+          headerTitle: "Profile",
+          headerStyle: styles.header,
+          headerRight: () => (
+            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+              <AntDesign name="logout" size={24} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#1DA1F2",
+  },
+  logoutButton: {
+    marginRight: 15,
+  },
+});
