@@ -32,7 +32,7 @@ export default function AuthNavigator() {
           headerStyle: styles.header,
           headerRight: () => (
             <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="white" />
+              <AntDesign name="logout" size={24} color="#1DA1F2" />
             </TouchableOpacity>
           ),
         }}
@@ -48,7 +48,7 @@ export default function AuthNavigator() {
           headerStyle: styles.header,
           headerRight: () => (
             <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="white" />
+              <AntDesign name="logout" size={24} color="#1DA1F2" />
             </TouchableOpacity>
           ),
         }}
@@ -64,7 +64,7 @@ export default function AuthNavigator() {
           headerStyle: styles.header,
           headerRight: () => (
             <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="white" />
+              <AntDesign name="logout" size={24} color="#1DA1F2" />
             </TouchableOpacity>
           ),
         }}
@@ -80,7 +80,7 @@ export default function AuthNavigator() {
           headerStyle: styles.header,
           headerRight: () => (
             <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="white" />
+              <AntDesign name="logout" size={24} color="#1DA1F2" />
             </TouchableOpacity>
           ),
         }}
@@ -91,7 +91,7 @@ export default function AuthNavigator() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#1DA1F2",
+    backgroundColor: "#F5EBEB",
   },
   logoutButton: {
     marginRight: 15,
