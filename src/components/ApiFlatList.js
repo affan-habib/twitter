@@ -7,6 +7,7 @@ import FollowUser from "./FollowUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import globalStyles from "../styles/globalStyles";
+import FadeIn from "./FadeIn";
 
 const PAGE_SIZE = 10;
 
@@ -59,37 +60,42 @@ const ApiFlatList = ({
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.container}>
-      <Image source={require("../assets/twitter.png")} style={styles.avatar} />
-      <View style={styles.card}>
-        {renderKeys.map((key) => {
-          // Access nested object using dot notation
-          let value = key.includes(".")
-            ? item[key.split(".")[0]][key.split(".")[1]]
-            : item[key];
+    <FadeIn>
+      <View style={styles.container}>
+        <Image
+          source={require("../assets/twitter.png")}
+          style={styles.avatar}
+        />
+        <View style={styles.card}>
+          {renderKeys.map((key) => {
+            // Access nested object using dot notation
+            let value = key.includes(".")
+              ? item[key.split(".")[0]][key.split(".")[1]]
+              : item[key];
 
-          // Format join_date key
-          if (key === "join_date") {
-            const formattedValue = moment(value).format("DD MMM YY");
-            value = `Member since ${formattedValue}`;
-          }
-          if (key === "posted") {
-            const formattedValue = moment(value).format("DD MMM YY");
-            value = `Updated at ${formattedValue}`;
-          }
-          return (
-            <Text
-              style={key === "user.username" ? styles.username : styles[key]}
-              key={key}
-            >
-              {value}
-            </Text>
-          );
-        })}
+            // Format join_date key
+            if (key === "join_date") {
+              const formattedValue = moment(value).format("DD MMM YY");
+              value = `Member since ${formattedValue}`;
+            }
+            if (key === "posted") {
+              const formattedValue = moment(value).format("DD MMM YY");
+              value = `Updated at ${formattedValue}`;
+            }
+            return (
+              <Text
+                style={key === "user.username" ? styles.username : styles[key]}
+                key={key}
+              >
+                {value}
+              </Text>
+            );
+          })}
+        </View>
+        {endpoint === "timeline" && <ReactOnPost />}
+        {endpoint === "users" && <FollowUser id={item.id} />}
       </View>
-      {endpoint === "timeline" && <ReactOnPost />}
-      {endpoint === "users" && <FollowUser id={item.id} />}
-    </View>
+    </FadeIn>
   );
 
   const renderFooter = () => {

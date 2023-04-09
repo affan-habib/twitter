@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import ApiFlatList from "../components/ApiFlatList";
-import Tweet from "./Tweet";
+import Tweet from "../components/Tweet";
 
 const Home = () => {
   return (
