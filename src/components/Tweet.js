@@ -10,6 +10,7 @@ import {
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AntDesign } from "expo-vector-icons";
 
 const Tweet = () => {
   const [tweet, setTweet] = useState("");
@@ -34,6 +35,7 @@ const Tweet = () => {
       console.log(err);
     }
   };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -45,14 +47,15 @@ const Tweet = () => {
 
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setModalVisible(false)}
-          >
-            <Feather name="x" size={24} color="#333" />
-          </TouchableOpacity>
-
-          <Text style={styles.title}>Post a Tweet</Text>
+          <View style={styles.header}>
+            <Text style={styles.title}>Post a Tweet</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+             <AntDesign name="closecircle" size={24} color="red" />
+            </TouchableOpacity>
+          </View>
 
           <TextInput
             style={styles.input}
@@ -77,7 +80,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
-    paddingTop: 100
   },
   button: {
     backgroundColor: "#1da1f2",
@@ -93,11 +95,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#fff",
   },
-  closeButton: {
-    position: "absolute",
-    top: 20,
-    right: 20,
+  header: {
 
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 20,
