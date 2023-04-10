@@ -9,14 +9,17 @@ const Followers = () => {
       <ApiFlatList
         endpoint="followers"
         dataKey="followers"
-        renderKeys={["id"]}
+        renderKeys={["username", "join_date"]}
         additionalStyles={additionalStyles}
       />
     </View>
   );
 };
 const additionalStyles = StyleSheet.create({
-
+  join_date: {
+    fontSize: 12,
+    color: "green",
+  },
 });
 
 export default Followers;

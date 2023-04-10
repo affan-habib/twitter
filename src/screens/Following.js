@@ -16,7 +16,9 @@ const Following = () => {
   );
 };
 const additionalStyles = StyleSheet.create({
-
-
+  join_date: {
+    fontSize: 12,
+    color: "green",
+  },
 });
 export default Following;
