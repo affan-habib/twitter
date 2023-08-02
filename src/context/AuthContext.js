@@ -7,6 +7,8 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     // Check if the user is authenticated when the app starts/restarts
@@ -18,7 +20,12 @@ const AuthProvider = ({ children }) => {
       const accessToken = await AsyncStorage.getItem("access_token");
 
       if (accessToken) {
+        const storedRole = await AsyncStorage.getItem("role");
+        const storedUserData = await AsyncStorage.getItem("user_data");
+
         setIsAuthenticated(true);
+        setRole(storedRole);
+        setUserData(JSON.parse(storedUserData));
       }
     } catch (error) {
       console.error("Error checking authentication state:", error);
@@ -34,7 +41,10 @@ const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem("refresh_token", refresh_token);
       await AsyncStorage.setItem("user_data", JSON.stringify(user_data));
       await AsyncStorage.setItem("role", String(user_data.account_type));
+
       setIsAuthenticated(true);
+      setRole(String(user_data.account_type));
+      setUserData(user_data);
     } catch (error) {
       console.error("Error setting auth cookies:", error);
     }
@@ -46,14 +56,17 @@ const AuthProvider = ({ children }) => {
       await AsyncStorage.removeItem("refresh_token");
       await AsyncStorage.removeItem("user_data");
       await AsyncStorage.removeItem("role");
+
       setIsAuthenticated(false);
+      setRole(null);
+      setUserData(null);
     } catch (error) {
       console.error("Error removing auth cookies:", error);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, role, userData, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

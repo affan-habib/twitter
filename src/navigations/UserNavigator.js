@@ -11,7 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 
 const Tab = createBottomTabNavigator();
 
-export default function AuthNavigator() {
+export default function UserNavigator() {
   const { logout } = useContext(AuthContext);
   return (
     <Tab.Navigator

@@ -4,7 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
 import Login from "../screens/Login";
 import Signup from "../screens/Signup";
-import AuthNavigator from "./AuthNavigator";
+import AuthNavigator from "./UserNavigator";
+import AdminNavigator from "./AdminNavigator";
 
 const Stack = createStackNavigator();
 
@@ -18,10 +19,28 @@ const AuthStack = () => {
 };
 
 const AppNavigator = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, role } = useContext(AuthContext);
+
+  const renderNavigatorBasedOnRole = () => {
+    if (isAuthenticated) {
+      // Check the user's role and render the appropriate navigator
+      switch (role) {
+        case "2":
+          return <AuthNavigator />;
+        case "5":
+          return <AdminNavigator />;
+        default:
+          // Add handling for other roles or unknown roles if needed
+          return null;
+      }
+    } else {
+      return <AuthStack />;
+    }
+  };
+
   return (
     <NavigationContainer>
-      {isAuthenticated ? <AuthNavigator /> : <AuthStack />}
+      {renderNavigatorBasedOnRole()}
     </NavigationContainer>
   );
 };
