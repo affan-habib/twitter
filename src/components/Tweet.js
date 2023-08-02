@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     right: 20,
   },
   button: {
-    backgroundColor: "#1da1f2",
+    backgroundColor: "#00D42A",
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   postButton: {
-    backgroundColor: "#1da1f2",
+    backgroundColor: "#00D42A",
     padding: 10,
     borderRadius: 5,
   },

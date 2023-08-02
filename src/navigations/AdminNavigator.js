@@ -14,7 +14,7 @@ export default function AdminNavigator() {
     <Tab.Navigator
       tabBarOptions={{
         showLabel: false,
-        activeTintColor: "#1DA1F2",
+        activeTintColor: "#00D42A",
         inactiveTintColor: "#AAB8C2",
       }}
     >
@@ -29,7 +29,7 @@ export default function AdminNavigator() {
           headerStyle: styles.header,
           headerRight: () => (
             <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="#1DA1F2" />
+              <AntDesign name="logout" size={24} color="#00D42A" />
             </TouchableOpacity>
           ),
         }}
@@ -45,7 +45,7 @@ export default function AdminNavigator() {
           headerStyle: styles.header,
           headerRight: () => (
             <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="#1DA1F2" />
+              <AntDesign name="logout" size={24} color="#00D42A" />
             </TouchableOpacity>
           ),
         }}

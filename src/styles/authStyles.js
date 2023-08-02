@@ -39,7 +39,7 @@ const authStyles = StyleSheet.create({
     fontSize: 12,
   },
   button: {
-    backgroundColor: "#1DA1F2",
+    backgroundColor: "#00D42A",
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: "center",
@@ -57,7 +57,7 @@ const authStyles = StyleSheet.create({
     marginTop: 10,
   },
   signupButton: {
-    color: "#1DA1F2",
+    color: "#00D42A",
   },
 });
 export default authStyles;

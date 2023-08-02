@@ -4,84 +4,56 @@ import { AntDesign } from "expo-vector-icons";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import Home from "../screens/Home";
 import { AuthContext } from "../context/AuthContext";
-// import CustomHeader from "../components/CustomHeader";
 
 const Tab = createBottomTabNavigator();
 
 export default function UserNavigator() {
   const { logout } = useContext(AuthContext);
+
+  const tabOptions = ({ route }) => ({
+    tabBarIcon: ({ color, size }) => {
+      let iconName;
+
+      switch (route.name) {
+        case "Home":
+          iconName = "home";
+          break;
+        case "Dashboard":
+          iconName = "appstore-o";
+          break;
+        case "Notification":
+          iconName = "bells";
+          break;
+        case "Profile":
+          iconName = "user";
+          break;
+        default:
+          iconName = "home";
+      }
+
+      return <AntDesign name={iconName} size={24} color={color} />;
+    },
+    headerTitle: route.name,
+    headerStyle: styles.header,
+    headerRight: () => (
+      <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+        <AntDesign name="logout" size={24} color="#00D42A" />
+      </TouchableOpacity>
+    ),
+  });
+
   return (
     <Tab.Navigator
       tabBarOptions={{
         showLabel: false,
-        activeTintColor: "#1DA1F2",
+        activeTintColor: "#00D42A",
         inactiveTintColor: "#AAB8C2",
       }}
     >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="home" size={24} color={color} />
-          ),
-          headerTitle: "Home",
-          headerStyle: styles.header,
-          headerRight: () => (
-            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="#1DA1F2" />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Explore"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="search1" size={24} color={color} />
-          ),
-          headerTitle: "Explore",
-          headerStyle: styles.header,
-          headerRight: () => (
-            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="#1DA1F2" />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="My Tweets"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="retweet" size={24} color={color} />
-          ),
-          headerTitle: "My Tweets",
-          headerStyle: styles.header,
-          headerRight: () => (
-            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="#1DA1F2" />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="user" size={24} color={color} />
-          ),
-          headerTitle: "Profile",
-          headerStyle: styles.header,
-          headerRight: () => (
-            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-              <AntDesign name="logout" size={24} color="#1DA1F2" />
-            </TouchableOpacity>
-          ),
-        }}
-      />
+      <Tab.Screen name="Home" component={Home} options={tabOptions} />
+      <Tab.Screen name="Dashboard" component={Home} options={tabOptions} />
+      <Tab.Screen name="Notification" component={Home} options={tabOptions} />
+      <Tab.Screen name="Profile" component={Home} options={tabOptions} />
     </Tab.Navigator>
   );
 }
