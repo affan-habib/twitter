@@ -1,29 +1,20 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import ApiFlatList from "../components/ApiFlatList";
-import Tweet from "../components/Tweet";
+import React, { useContext } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { AuthContext } from "../context/AuthContext";
 
 const Home = () => {
+  const { userData } = useContext(AuthContext);
+
   return (
     <View style={{ flex: 1 }}>
-      <ApiFlatList
-        endpoint="timeline"
-        dataKey="timeline"
-        renderKeys={["user.username", "content", "posted"]}
-        additionalStyles={additionalStyles}
-      />
-      <Tweet />
+      <Text>Hello {userData.fullname}</Text>
     </View>
   );
 };
-const additionalStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   content: {
     fontSize: 14,
-  },
-  posted: {
-    fontSize: 12,
-    color: "green",
-  },
+  }
 });
 
 export default Home;

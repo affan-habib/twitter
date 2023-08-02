@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "expo-vector-icons";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import Home from "../screens/Home";
-import UsersList from "../screens/Users";
 import { AuthContext } from "../context/AuthContext";
 // import CustomHeader from "../components/CustomHeader";
 
@@ -37,7 +36,7 @@ export default function AdminNavigator() {
       />
       <Tab.Screen
         name="Explore"
-        component={UsersList}
+        component={Home}
         options={{
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="search1" size={24} color={color} />
