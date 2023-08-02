@@ -18,12 +18,10 @@ const AuthStack = () => {
 };
 
 const AppNavigator = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-  console.log(isLoggedIn)
-
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {isLoggedIn ? <AuthNavigator /> : <AuthStack />}
+      {isAuthenticated ? <AuthNavigator /> : <AuthStack />}
     </NavigationContainer>
   );
 };

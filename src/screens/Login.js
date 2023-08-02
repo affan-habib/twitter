@@ -6,9 +6,10 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
 import authStyles from "../styles/authStyles";
+import { setAuthCookies } from "../helpers/AuthUtils";
 
 const LoginSchema = yup.object().shape({
-  email: yup.string().email("Invalid email").required("Email is required"),
+  phone_number: yup.string().required("Phone number is required"),
   password: yup.string().required("Password is required"),
 });
 
@@ -22,17 +23,17 @@ const Login = ({ navigation }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://missingdata.pythonanywhere.com/login",
+        "http://18.142.158.4:5001/api/v1/core/user/login",
         {
-          email: values.email,
+          phone_number: values.phone_number,
           password: values.password,
         }
       );
-      console.log(response.data);
-      login(response.data.token);
+      console.log(response.data.data)
+      login(response.data.data); 
     } catch (error) {
       console.error(error);
-      setErrorMessage("Invalid email or password. Please try again.");
+      setErrorMessage("Invalid phone number or password. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -54,8 +55,8 @@ const Login = ({ navigation }) => {
           )}
           <Formik
             initialValues={{
-              email: "",
-              password: "",
+              phone_number: "01111111111",
+              password: "12345",
             }}
             onSubmit={(values) => handleLogin(values)}
             validationSchema={LoginSchema}
@@ -73,16 +74,18 @@ const Login = ({ navigation }) => {
                   <TextInput
                     style={[
                       styles.input,
-                      touched.email && errors.email ? styles.inputError : null,
+                      touched.phone_number && errors.phone_number
+                        ? styles.inputError
+                        : null,
                     ]}
-                    placeholder="Email or username"
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
-                    value={values.email}
-                    keyboardType="email-address"
+                    placeholder="Phone number"
+                    onChangeText={handleChange("phone_number")}
+                    onBlur={handleBlur("phone_number")}
+                    value={values.phone_number}
+                    keyboardType="phone-pad"
                   />
-                  {touched.email && errors.email ? (
-                    <Text style={styles.errorText}>{errors.email}</Text>
+                  {touched.phone_number && errors.phone_number ? (
+                    <Text style={styles.errorText}>{errors.phone_number}</Text>
                   ) : null}
                 </View>
                 <View style={styles.inputContainer}>
